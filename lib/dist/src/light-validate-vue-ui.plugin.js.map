@@ -1,0 +1,1 @@
+{"version":3,"file":"light-validate-vue-ui.plugin.js","sourceRoot":"","sources":["../../src/light-validate-vue-ui.plugin.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,QAAQ,EAAE,OAAO,EAAE,MAAM,mCAAmC,CAAC;AACtE,MAAM,UAAU,OAAO,CAAC,GAAmB;IACvC,GAAG,CAAC,SAAS,CAAC,QAAQ,EAAE,OAAO,CAAC,CAAC;AACrC,CAAC;AAED,eAAe,EAAE,OAAO,EAAE,CAAA"}
