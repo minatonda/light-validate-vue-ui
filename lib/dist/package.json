@@ -1,0 +1,57 @@
+{
+  "name": "light-validate-vue-ui",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "description": "Vue UI module for working with the light-validate Library",
+  "scripts": {
+    "build": "npm run build:clean && npm run build:ts:dist && npm run build:copy",
+    "build:ts:dev": "tsc --project ./.build/typescript/tsconfig.dev.json",
+    "build:ts:dist": "tsc --project ./.build/typescript/tsconfig.build.json",
+    "build:clean": "rimraf dist",
+    "build:copy": "copyfiles --flat package.json readme.md dist",
+    "test": "jest --config=./.build/jest/jest.config.js",
+    "test:coverage": "jest --config=./.build/jest/jest.config.js --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/minatonda/light-validate-vue-ui.git"
+  },
+  "homepage": "https://github.com/minatonda/light-validate-vue-ui",
+  "keywords": [
+    "light",
+    "validate",
+    "light-validate",
+    "directive",
+    "module",
+    "decorator",
+    "mapping",
+    "rule",
+    "annotation",
+    "functional",
+    "reusability",
+    "facility",
+    "pure",
+    "vue",
+    "ui"
+  ],
+  "author": "minatonda",
+  "license": "ISC",
+  "dependencies": {
+    "light-validate": "^1.0.4",
+    "reflect-metadata": "~0.1.13"
+  },
+  "peerDependencies": {
+    "reflect-metadata": "~0.1.13"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.7",
+    "@types/reflect-metadata": "0.1.0",
+    "copyfiles": "2.1.0",
+    "jest": "24.7.1",
+    "rimraf": "2.6.3",
+    "ts-jest": "24.0.2",
+    "typescript": "3.4.4",
+    "vue": "^2.6.10"
+  }
+}
