@@ -1,95 +1,103 @@
 import { LightException, validate } from 'light-validate';
 import Vue, { DirectiveOptions, VNode, VueConstructor } from 'vue';
+import { UiLightValidateResolver } from './ui-light-validate.resolver';
 
 
 export const selector = 'ui-light-validate';
-export const options: DirectiveOptions = {
+export function directive(resolver: UiLightValidateResolver) {
 
-    inserted: function (el, binding, vnode) {
+    const options: DirectiveOptions = {
 
-        const modelRuleClass = binding.value;
-        // const modelRuleOnValidate = getModelRuleOnValidate(el, vnode);
+        inserted: function (el, binding, vnode) {
 
-        // criar span que irá conter o erro.
-        const htmlErrorElement = getHtmlErrorElement(el);
+            const modelRuleClass = binding.value;
+            // const modelRuleOnValidate = getModelRuleOnValidate(el, vnode);
 
-        if (isIconEnabled(el)) {
-            // criar div que irá conter o icone referente a validação
-            const htmlIconElement = getHtmlIconElement(el);
-            !el.parentNode.contains(htmlIconElement) && el.parentNode.insertBefore(htmlIconElement, el);
-        }
+            // criar span que irá conter o erro.
+            const htmlErrorElement = getHtmlErrorElement(el);
 
-        const onValidateThen = () => {
-            //remover span com classe 'error' referente ao campo do DOM...caso já esteja presente
-            el.parentNode.contains(htmlErrorElement) && el.parentNode.removeChild(htmlErrorElement);
+            if (isIconEnabled(el)) {
+                // criar div que irá conter o icone referente a validação
+                const htmlIconElement = getHtmlIconElement(el);
+                !el.parentNode.contains(htmlIconElement) && el.parentNode.insertBefore(htmlIconElement, el);
+            }
 
-            el.parentElement.classList.remove(getElementInvalidClass(el));
-            el.parentElement.classList.add(getElementValidClass(el));
+            const onValidateThen = () => {
+                //remover span com classe 'error' referente ao campo do DOM...caso já esteja presente
+                el.parentNode.contains(htmlErrorElement) && el.parentNode.removeChild(htmlErrorElement);
 
-            //disparar callback externo onValidate
-            emit(vnode, 'ui-light-on-validate', undefined);
-        };
+                el.parentElement.classList.remove(getElementInvalidClass(el));
+                el.parentElement.classList.add(getElementValidClass(el));
 
-        const onValidateCatch = (exceptions: LightException[]) => {
-            const exception = exceptions.shift();
-
-            //setar texto do span com classe 'error' referente ao campo do DOM...
-            htmlErrorElement.innerHTML = exception.code;
-            //adicionar span com classe 'error' referente ao campo do DOM...caso já não esteja presente
-            !el.parentNode.contains(htmlErrorElement) && el.parentNode.appendChild(htmlErrorElement);
-            el.parentElement.classList.add(getElementInvalidClass(el));
-            el.parentElement.classList.remove(getElementValidClass(el));
-
-            //disparar callback externo onValidate
-            emit(vnode, 'ui-light-on-validate', exception);
-        };
-
-        const onValidateFinally = () => {
-
-        }
-
-        let firstTrigger: boolean = true;
-        if (isValidateOnBlurEnabled(el)) {
-            el.onblur = (event) => {
-                firstTrigger = false;
-                validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
-                    .then(() => onValidateThen())
-                    .catch((errors) => onValidateCatch(errors))
-                    .finally(() => onValidateFinally());
+                //disparar callback externo onValidate
+                emit(vnode, 'ui-light-on-validate', undefined);
             };
-        };
 
-        if (isValidateOnChangeEnabled(el)) {
-            el.onchange = (event) => {
-                firstTrigger = false;
-                validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
-                    .then(() => onValidateThen())
-                    .catch((errors) => onValidateCatch(errors))
-                    .finally(() => onValidateFinally());
+            const onValidateCatch = (exceptions: LightException[]) => {
+                const exception = exceptions.shift();
+
+                //setar texto do span com classe 'error' referente ao campo do DOM...
+                htmlErrorElement.innerHTML = resolver ? resolver.label(exception) : exception.code;
+                //adicionar span com classe 'error' referente ao campo do DOM...caso já não esteja presente
+                !el.parentNode.contains(htmlErrorElement) && el.parentNode.appendChild(htmlErrorElement);
+                el.parentElement.classList.add(getElementInvalidClass(el));
+                el.parentElement.classList.remove(getElementValidClass(el));
+
+                //disparar callback externo onValidate
+                emit(vnode, 'ui-light-on-validate', exception);
             };
-        }
 
-        if (isValidateOnBlurEnabled(el) || isValidateOnChangeEnabled(el)) {
-            el.onkeyup = (event) => {
-                if (!firstTrigger) {
+            const onValidateFinally = () => {
+
+            }
+
+            let firstTrigger: boolean = true;
+            if (isValidateOnBlurEnabled(el)) {
+                el.onblur = (event) => {
+                    firstTrigger = false;
+                    validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
+                        .then(() => onValidateThen())
+                        .catch((errors) => onValidateCatch(errors))
+                        .finally(() => onValidateFinally());
+                };
+            };
+
+            if (isValidateOnChangeEnabled(el)) {
+                el.onchange = (event) => {
+                    firstTrigger = false;
+                    validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
+                        .then(() => onValidateThen())
+                        .catch((errors) => onValidateCatch(errors))
+                        .finally(() => onValidateFinally());
+                };
+            }
+
+            if (isValidateOnBlurEnabled(el) || isValidateOnChangeEnabled(el)) {
+                el.onkeyup = (event) => {
+                    if (!firstTrigger) {
+                        validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
+                            .then(() => onValidateThen())
+                            .catch((errors) => onValidateCatch(errors))
+                            .finally(() => onValidateFinally());
+                    }
+                }
+            }
+            else if (isValidateOnKeyUpEnabled(el)) {
+                el.onkeyup = (event) => {
                     validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
                         .then(() => onValidateThen())
                         .catch((errors) => onValidateCatch(errors))
                         .finally(() => onValidateFinally());
                 }
-            }
-        }
-        else if (isValidateOnKeyUpEnabled(el)) {
-            el.onkeyup = (event) => {
-                validate(getVModelValue(el, vnode), modelRuleClass, getElementProperty(el))
-                    .then(() => onValidateThen())
-                    .catch((errors) => onValidateCatch(errors))
-                    .finally(() => onValidateFinally());
-            }
-        };
+            };
 
-    }
+        }
+    };
+
+    return options;
+
 }
+
 
 function isValidateOnBlurEnabled(el: HTMLElement) {
     return getBoolValueFromAttr(el, 'ui-light-validate-on-blur', true);
@@ -172,6 +180,6 @@ function getHtmlErrorElement(el: HTMLElement) {
     return htmlSpanElement;
 }
 
-export default function (vue: VueConstructor<Vue>) {
-    Vue.directive(selector, options);
-};
+// export default function (vue: VueConstructor<Vue>) {
+//     Vue.directive(selector, options);
+// };

@@ -1,5 +1,6 @@
 import { VueConstructor } from 'vue';
-export declare function install(vue: VueConstructor): void;
+import { UiLightValidateResolver } from './ui-light-validate.resolver';
+export declare function install(vue: VueConstructor, config?: UiLightValidateResolver): void;
 declare const _default: {
     install: typeof install;
 };

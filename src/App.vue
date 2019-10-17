@@ -1,23 +1,20 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
 </template>
-
-<script lang="ts">
+<script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from './components/HelloWorld.vue';
 
 @Component({
   components: {
-    HelloWorld,
-  },
+    HelloWorld
+  }
 })
 export default class App extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang='scss'>
+@import '~daemonite-material/assets/scss/material';
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

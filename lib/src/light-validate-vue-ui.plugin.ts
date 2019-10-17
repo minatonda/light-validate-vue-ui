@@ -1,7 +1,7 @@
-import Vue, { VueConstructor } from 'vue';
-import { selector, options } from './light-validate-vue-ui.directive';
-export function install(vue: VueConstructor) {
-    vue.directive(selector, options);
+import { VueConstructor } from 'vue';
+import { selector, directive } from './light-validate-vue-ui.directive';
+import { UiLightValidateResolver } from './ui-light-validate.resolver';
+export function install(vue: VueConstructor, config: UiLightValidateResolver = undefined) {
+    vue.directive(selector, directive(config));
 }
-
 export default { install }

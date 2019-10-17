@@ -1,6 +1,6 @@
 {
   "name": "light-validate-vue-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.ts",
   "description": "Vue UI module for working with the light-validate Library",
   "scripts": {

@@ -2,6 +2,9 @@
 Vue UI module for working with the light-validate Library.
 This module provides a directive that controls properties of an html element based on a class with Light Validate mappings.
 
+## Sample
+https://minatonda.github.io/light-validate-vue-ui/
+
 ### Install
 
 ```sh
@@ -15,6 +18,16 @@ Register the UiLightValidate plugin on Vue.
 ```typescript
 import * as UiLightValidate from 'light-validate-vue-ui';
 Vue.use(UiLightValidate);
+```
+
+### Customize Label Messages
+```typescript
+import * as UiLightValidate from 'light-validate-vue-ui';
+Vue.use(UiLightValidate, {
+  label: (exception) => {
+    return `${exception.code} ${exception.property}`;
+  }
+});
 ```
 
 ### Development and Implementation - Create your LightRules ...

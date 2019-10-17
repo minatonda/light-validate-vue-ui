@@ -1,4 +1,4 @@
-import Vue, { DirectiveOptions, VueConstructor } from 'vue';
+import { DirectiveOptions } from 'vue';
+import { UiLightValidateResolver } from './ui-light-validate.resolver';
 export declare const selector = "ui-light-validate";
-export declare const options: DirectiveOptions;
-export default function (vue: VueConstructor<Vue>): void;
+export declare function directive(resolver: UiLightValidateResolver): DirectiveOptions;

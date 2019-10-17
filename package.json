@@ -25,6 +25,7 @@
     "@vue/cli-service": "^3.10.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
+    "daemonite-material": "^4.1.1",
     "light-validate": "^1.0.4",
     "reflect-metadata": "^0.1.13",
     "sass": "^1.18.0",
